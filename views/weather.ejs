@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WeatherApp</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Weather Details </h1>
+<ul> 
+<li>Weather : <%=weatherData.weather.curren_weather[0].weather_text%></li>
+<li>Temperature : <%=weatherData.weather.curren_weather[0].temp%> F</li>
+<li>Wind speed : <%=weatherData.weather.curren_weather[0].wind[0].speed %>kph </li>
+</ul>
+  </body>
+</html>
