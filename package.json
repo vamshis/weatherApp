@@ -9,6 +9,9 @@
     "express": "3.4.7",
     "ejs": "latest",
     "mocha": "latest",
-    "request": "~2.30.0"
+    "request": "~2.30.0",
+    "passport": "~0.1.17",
+    "passport-github": "~0.1.5",
+    "util": "~0.10.1"
   }
 }
