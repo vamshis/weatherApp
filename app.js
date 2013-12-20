@@ -21,6 +21,8 @@ var callbackURL = config.passport.github.callbackUrl;
 //setup passport
 passport.serializeUser(function(user, done){
     done(null, user);
+//    console.log(user);
+    
 });
 
 passport.deserializeUser(function(obj, done){
@@ -34,7 +36,6 @@ passport.use(new GitHubStrategy({
     function(accessToken, refreshToken, profile, done){
       process.nextTick(function(){
         return done(null, profile);
-        console.log(profile);
       });
    }
 ));
@@ -72,18 +73,29 @@ app.get('/', routes.index);
 
 app.get('/error', routes.error);
 app.get('/auth/github', 
-        passport.authenticate('github'), function(req, res){});
+        passport.authenticate('github'), 
+        function(req, res){
+        });
 
-app.get('/auth/github/callback',
-       passport.authenticate('github', {failureRedirect: '/error'}),
-       function(req, res){
-         res.redirect('/query');
-       });      
+var gitResponse;
+var requestGit;
+var profileData;
+app.get('/auth/github/callback', 
+        passport.authenticate('github', {failureRedirect: '/error'}),
+        function(req, res){
+          profileData = req.user._raw;
+       //   data = JSON.stringify(data);
+       //   gitResponse = res;
+       //   requestGit = req;
+       //   res.redirect('/query');
+            routes.query(req, res, profileData);
+         }
+       );
 
 
-app.get('/query', ensureAuthenticated, routes.query);
+//app.get('/query', ensureAuthenticated, function(req, res, profileData){routes.query(req, res, profileData);});
 
-app.post('/', ensureAuthenticated, function(req, res){
+app.post('/weather', ensureAuthenticated, function(req, res){
    var zipcode = req.body.zip;
    var Url = "http://www.myweather2.com/developer/forecast.ashx?uac=pNuxVGYDai&output=json&query=" + zipcode + "&temp_unit=f&ws_unit=kph";
    Url = Url.toString();
@@ -93,7 +105,6 @@ app.post('/', ensureAuthenticated, function(req, res){
 
    request.get({url:Url}, function (err, res, data) {
      weatherData = JSON.parse(data);
-     console.log(weatherData);
      routes.weather(req, response, weatherData);
    });
 });

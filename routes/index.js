@@ -7,8 +7,8 @@ exports.index = function(req, res){
   res.render('index');
 };
 
-exports.query = function(req, res){
- res.render('query');
+exports.query = function(req, res, user){
+ res.render('query', {user: user});
 };
 
 exports.error = function(req, res){
@@ -16,6 +16,5 @@ exports.error = function(req, res){
 };
 
 exports.weather = function(req, res, data){
-//  console.log(data);
   res.render('weather', {weatherData:data});
 };
